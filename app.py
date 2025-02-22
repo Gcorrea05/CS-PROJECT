@@ -1,8 +1,10 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
+from flask_cors import CORS
 import sqlite3
 from datetime import datetime
 
 app = Flask(__name__, template_folder='.')
+CORS(app)  # Configurar CORS para permitir solicitações de qualquer origem
 
 def get_price_data():
     conn = sqlite3.connect('get_price.db')
