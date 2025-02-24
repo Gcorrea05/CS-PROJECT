@@ -1,97 +1,96 @@
+/* Estilos Gerais */
 body {
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff;
-    color: #333;
-  }
-  
-  header {
-    background-color: #004da0;
-    color: #fff;
-    padding: 15px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  h1 {
-    margin: 0;
-  }
-  
-  main {
-    width: 100%;
-    max-width: 800px;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    margin-top: 20px;
-  }
-  
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+header {
+  background-color: #007BFF;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h1 {
+  margin: 0;
+  font-size: 2.5em;
+}
+
+main {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  background-color: #007BFF;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+.price-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.price-info p {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+#chart {
+  margin-top: 20px;
+}
+
+#chart h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
   .search-bar {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
+    flex-direction: column;
   }
-  
-  .search-bar input {
-    padding: 10px;
-    font-size: 16px;
-    width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 4px 0 0 4px;
-  }
-  
+
+  .search-bar input,
   .search-bar button {
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    background-color: #007BFF;
-    color: #fff;
-    cursor: pointer;
-    border-radius: 0 4px 4px 0;
-  }
-  
-  .search-bar button:hover {
-    background-color: #0056b3;
-  }
-  
-  .price-info {
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  
-  .price-info p {
-    font-size: 18px;
-    margin: 10px 0;
-  }
-  
-  #chart {
-    margin-top: 20px;
     width: 100%;
-    max-width: 600px;
-    height: 400px;
-    background-color: #f4f4f4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    margin-bottom: 10px;
   }
-  
-  @media (max-width: 600px) {
-    .search-bar input {
-      width: 100%;
-    }
-  
-    #chart {
-      height: 300px;
-    }
+
+  .search-bar button {
+    margin-bottom: 0;
   }
-  
+}
