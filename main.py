@@ -26,7 +26,7 @@ def get_price():
     }
 
     # Conectar ao banco de dados uma única vez
-    conn = sqlite3.connect('get_price.db')
+    conn = sqlite3.connect('gallery_case.db')
 
     # Verificar a data atual no início
     current_date = datetime.now().strftime("%Y-%m-%d")

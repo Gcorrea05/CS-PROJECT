@@ -7,7 +7,7 @@ app = Flask(__name__, template_folder='.')
 CORS(app)  # Configurar CORS para permitir solicitações de qualquer origem
 
 def get_price_data():
-    conn = sqlite3.connect('get_price.db')
+    conn = sqlite3.connect('gallery_case.db')
     cursor = conn.cursor()
     
     # Obter a data de hoje
