@@ -4,16 +4,13 @@ import time
 from datetime import datetime
 
 # Função para armazenar os dados no banco de dados
-def write_to_db(conn, lowest_price, highest_price):
+def write_to_db(conn, date, time_str, lowest_price, highest_price):
     cursor = conn.cursor()
-    now = datetime.now()
-    date = now.strftime("%Y-%m-%d")
-    time_str = now.strftime("%H:%M:%S")
 
     # Adiciona "R$" aos valores antes de armazená-los
-    lowest_price_str = f"R$ {lowest_price:.2f}".replace('.', ',')
-    highest_price_str = f"R$ {highest_price:.2f}".replace('.', ',')
-    
+    lowest_price_str = f"{lowest_price:.2f}".replace('.', ',')
+    highest_price_str = f"{highest_price:.2f}".replace('.', ',')
+
     cursor.execute('''
         INSERT INTO prices (date, time, lowest_price, highest_price)
         VALUES (?, ?, ?, ?)
@@ -31,10 +28,19 @@ def get_price():
     # Conectar ao banco de dados uma única vez
     conn = sqlite3.connect('get_price.db')
 
-    lowest_price_ever = float('inf')
-    highest_price_ever = float('-inf')
+    # Verificar a data atual no início
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    cursor = conn.cursor()
+    cursor.execute('SELECT MIN(lowest_price), MAX(lowest_price) FROM prices WHERE date = ?', (current_date,))
+    row = cursor.fetchone()
+    lowest_price_today = float('inf')
+    highest_price_today = float('-inf')
+    
+    if row[0] is not None and row[1] is not None:
+        lowest_price_today = float(row[0].replace(',', '.'))
+        highest_price_today = float(row[1].replace(',', '.'))
 
-    while True:  # Loop infinito
+    while True:
         try:
             response = requests.get(url, headers=headers, timeout=10)
 
@@ -46,22 +52,33 @@ def get_price():
 
                 print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Preço mais baixo: R${lowest_price}")
 
-                # Atualiza o menor e maior preço já obtido
-                if lowest_price < lowest_price_ever:
-                    lowest_price_ever = lowest_price
-                if lowest_price > highest_price_ever:
-                    highest_price_ever = lowest_price
-
+                # Verifica se o dia mudou
+                now = datetime.now()
+                new_date = now.strftime("%Y-%m-%d")
+                time_str = now.strftime("%H:%M:%S")
+                
+                if new_date != current_date:
+                    # Atualiza a data e reinicia os valores diários
+                    current_date = new_date
+                    lowest_price_today = lowest_price
+                    highest_price_today = lowest_price
+                else:
+                    # Atualiza os valores diários
+                    if lowest_price < lowest_price_today:
+                        lowest_price_today = lowest_price
+                    if lowest_price > highest_price_today:
+                        highest_price_today = lowest_price
+                
                 # Armazena no banco de dados
-                write_to_db(conn, lowest_price_ever, highest_price_ever)
+                write_to_db(conn, current_date, time_str, lowest_price_today, highest_price_today)
             else:
                 print(f"Erro na requisição. Status Code: {response.status_code}")
 
         except Exception as e:
             print(f"Erro ao obter dados: {e}")
 
-        # Espera 5 seg antes da próxima requisição
-        time.sleep(5)
+        # Espera 5 segundos antes da próxima requisição
+        time.sleep(20)
 
 # Iniciar a coleta de preços
 get_price()

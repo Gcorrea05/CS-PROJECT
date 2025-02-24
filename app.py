@@ -15,10 +15,11 @@ def get_price_data():
     
     # Consultar o menor e o maior valor do dia de hoje
     cursor.execute('''
-        SELECT MIN(lowest_price), MAX(lowest_price)
+        SELECT MIN(lowest_price), MAX(highest_price)
         FROM prices
         WHERE date = ?
-    ''', (today,))
+        ''', (today,))
+
     
     row = cursor.fetchone()
     conn.close()
