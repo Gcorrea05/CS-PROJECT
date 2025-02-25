@@ -43,7 +43,12 @@ def get_price():
     while True:
         try:
             response = requests.get(url, headers=headers, timeout=10)
-
+            
+            if response.status_code == 429:
+                print("Muitas requisições! Aguardando 10 minutos antes de tentar novamente...")
+                time.sleep(300)  # Espera 5 minutos antes de tentar novamente
+                continue
+            
             if response.status_code == 200:
                 data = response.json()
                 
@@ -58,12 +63,10 @@ def get_price():
                 time_str = now.strftime("%H:%M:%S")
                 
                 if new_date != current_date:
-                    # Atualiza a data e reinicia os valores diários
                     current_date = new_date
                     lowest_price_today = lowest_price
                     highest_price_today = lowest_price
                 else:
-                    # Atualiza os valores diários
                     if lowest_price < lowest_price_today:
                         lowest_price_today = lowest_price
                     if lowest_price > highest_price_today:
@@ -77,8 +80,8 @@ def get_price():
         except Exception as e:
             print(f"Erro ao obter dados: {e}")
 
-        # Espera 5 segundos antes da próxima requisição
-        time.sleep(20)
+        # Espera 60 segundos antes da próxima requisição
+        time.sleep(60)
 
 # Iniciar a coleta de preços
 get_price()
